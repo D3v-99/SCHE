@@ -19,10 +19,8 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy custom nginx config (if you have one)
-# If you don't have a custom nginx.conf in client/, this line will fail.
-# Remove it or create a simple one.
-COPY nginx.conf /etc/nginx/conf.d/default.conf 2>/dev/null || true
+# Use default nginx config (no custom file needed)
+# The default config serves static files from /usr/share/nginx/html correctly.
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
