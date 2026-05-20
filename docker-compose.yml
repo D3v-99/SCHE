@@ -1,20 +1,24 @@
+version: '3.8'
+
 services:
   server:
-    build:
-      context: ./server
-    env_file:
-      - ./server/.env
+    build: ./server
     ports:
       - "3000:3000"
-    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    networks:
+      - sche-network
 
   client:
-    build:
-      context: ./client
-      args:
-        VITE_BASE_URL: /apps/schedule/
-    depends_on:
-      - server
+    build: ./client
     ports:
       - "8888:80"
-    restart: unless-stopped
+    depends_on:
+      - server
+    networks:
+      - sche-network
+
+networks:
+  sche-network:
+    driver: bridge
