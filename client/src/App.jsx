@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+const baseUrl = import.meta.env.BASE_URL || ''; // Get the base URL from Vite
+const apiUrl = `${baseUrl}api/test-login`; // Construct the full path
 
 export default function App() {
   const [loading, setLoading] = useState(false)
@@ -12,7 +14,7 @@ export default function App() {
     setResult(null)
 
     try {
-      const res = await fetch('/api/test-login', {
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       })
