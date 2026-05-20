@@ -1,0 +1,18 @@
+services:
+  server:
+    build:
+      context: ./server
+    env_file:
+      - ./server/.env
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
+    restart: unless-stopped
