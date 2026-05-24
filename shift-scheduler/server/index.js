@@ -8,6 +8,7 @@ import scheduleRoutes from './routes/schedule.js'
 import swapRoutes from './routes/swap.js'
 import holidayRoutes from './routes/holidays.js'
 import exportRoutes from './routes/export.js'
+import authRoutes from './routes/auth.js'
 import Team from './models/Team.js'
 import Member from './models/Member.js'
 
@@ -22,6 +23,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+app.use('/api/auth', authRoutes)
 app.use('/api/teams', teamsRoutes)
 app.use('/api/schedule', scheduleRoutes)
 app.use('/api/swap', swapRoutes)

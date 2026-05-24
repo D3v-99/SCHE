@@ -51,6 +51,18 @@
   flex-wrap: wrap;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
 .legend-item {
   padding: 8px 12px;
   border-radius: 999px;
@@ -152,11 +164,31 @@ textarea {
   align-items: start;
 }
 
+.layout--single {
+  grid-template-columns: 1fr;
+}
+
 .panel {
   background: var(--card);
   border-radius: var(--radius);
   padding: 18px;
   box-shadow: var(--shadow);
+}
+
+.login {
+  width: min(460px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.login h2 {
+  margin: 0;
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
 }
 
 .panel--calendar {

@@ -12,15 +12,19 @@ Full-stack shift scheduling app for IT support teams.
    ```bash
    cp .env.example .env
    ```
-2. Update `MONGO_URI` in `.env` to point to your MongoDB instance.
+2. Update variables in `.env`:
+   - `MONGO_URI` (MongoDB is running outside Docker)
+   - `JWT_SECRET` (any long random string)
+   - `ADMIN_USERNAME` / `ADMIN_PASSWORD` (admin login)
 
 ## Build and run
 ```bash
 docker compose up --build
 ```
 
-The client will be available at http://localhost:3000
-The API will be available at http://localhost:5000
+The view-only calendar will be available at http://localhost:3000/apps/schedule/
+The admin page will be available at http://localhost:3000/apps/schedule/admin
+The API will be available at http://localhost:5000/api (health check: http://localhost:5000/health)
 
 ## Stop
 ```bash

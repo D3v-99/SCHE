@@ -1,6 +1,7 @@
 import express from 'express'
 import Team from '../models/Team.js'
 import Member from '../models/Member.js'
+import { requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
@@ -74,7 +75,7 @@ router.get('/', async (req, res) => {
   res.json({ teams })
 })
 
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   const { teamId, members, teams } = req.body
 
   if (Array.isArray(teams)) {

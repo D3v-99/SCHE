@@ -1,6 +1,7 @@
 import express from 'express'
 import Schedule from '../models/Schedule.js'
 import { endOfWeek, parseDate, startOfWeek, toStartOfDay } from '../utils/date.js'
+import { requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
@@ -64,7 +65,7 @@ router.get('/', async (req, res) => {
   res.json({ schedule })
 })
 
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   const entries = Array.isArray(req.body.entries) ? req.body.entries : []
 
   if (!entries.length) {

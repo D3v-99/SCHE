@@ -1,11 +1,12 @@
 import express from 'express'
 import Schedule from '../models/Schedule.js'
 import Swap from '../models/Swap.js'
-import { parseDate, startOfWeek } from '../utils/date.js'
+import { endOfWeek, parseDate, startOfWeek } from '../utils/date.js'
+import { requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   const { teamId, weekStart, requestedBy, coveredBy, reason } = req.body
 
   if (!teamId || !weekStart || !requestedBy || !coveredBy) {
@@ -19,13 +20,18 @@ router.post('/', async (req, res) => {
 
   const normalizedWeekStart = startOfWeek(parsedWeekStart)
 
-  const schedule = await Schedule.findOne({ teamId, weekStart: normalizedWeekStart })
+  let schedule = await Schedule.findOne({ teamId, weekStart: normalizedWeekStart })
   if (!schedule) {
-    return res.status(404).json({ message: 'Schedule not found for the requested week' })
+    schedule = await Schedule.create({
+      teamId,
+      weekStart: normalizedWeekStart,
+      weekEnd: endOfWeek(normalizedWeekStart),
+      memberId: coveredBy
+    })
+  } else {
+    schedule.memberId = coveredBy
+    await schedule.save()
   }
-
-  schedule.memberId = coveredBy
-  await schedule.save()
 
   const swap = await Swap.create({
     requestedBy,

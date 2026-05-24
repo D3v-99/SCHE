@@ -1,16 +1,27 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+import { getToken } from './auth.js'
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
 export const apiFetch = async (path, options = {}) => {
+  const token = getToken()
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers
     },
     ...options
   })
 
   if (!response.ok) {
-    const text = await response.text()
+    const contentType = response.headers.get('content-type') || ''
+    if (contentType.includes('application/json')) {
+      const data = await response.json().catch(() => null)
+      const message = data?.message || 'Request failed'
+      throw new Error(message)
+    }
+
+    const text = await response.text().catch(() => '')
     throw new Error(text || 'Request failed')
   }
 

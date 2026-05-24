@@ -1,6 +1,7 @@
 import express from 'express'
 import Holiday from '../models/Holiday.js'
 import { parseDate, toStartOfDay } from '../utils/date.js'
+import { requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
   res.json({ holidays })
 })
 
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   const { remove, id, date, name } = req.body
 
   if (remove) {
